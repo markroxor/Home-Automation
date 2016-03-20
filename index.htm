@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Home Automation</title>
+        <script>
+		strLED1 = "";
+		strLED2 = "";
+		strLED3 = "";
+		strLED4 = "";
+		strLED5 = "";
+		strLED6 = "";
+		var LED1_state = 0;
+		var LED2_state = 0;
+		var LED3_state = 0;
+		var LED4_state = 0;
+		var LED5_state = 0;
+		var LED6_state = 0;
+		var fan1;
+		var fan2;
+		function GetArduinoIO()
+		{
+			nocache = "&nocache=" + Math.random() * 1000000;
+			var request = new XMLHttpRequest();
+			request.onreadystatechange = function()
+			{
+				if (this.readyState == 4) {
+					if (this.status == 200) {
+						if (this.responseXML != null) {
+						
+							document.getElementById("TEMP").innerHTML = this.responseXML.getElementsByTagName('n')[0].childNodes[0].nodeValue;
+                            document.getElementById("HUMI").innerHTML = this.responseXML.getElementsByTagName('g')[0].childNodes[0].nodeValue;
+							
+                            if(this.responseXML.getElementsByTagName('A')[0].childNodes[0].nodeValue == 1){
+							document.getElementById("LED1").checked=true;
+							LED1_state = 1;
+							}else{
+							document.getElementById("LED1").checked=false;
+							LED1_state = 0;
+							}
+							
+							if(this.responseXML.getElementsByTagName('B')[0].childNodes[0].nodeValue==1){
+							document.getElementById("LED2").checked=true;
+							LED2_state = 1;
+							}else{
+							document.getElementById("LED2").checked=false;
+							LED2_state = 0;
+							}
+														
+							if(this.responseXML.getElementsByTagName('C')[0].childNodes[0].nodeValue == 1){
+							document.getElementById("LED3").checked=true;
+							LED4_state = 1;
+							}else{
+							document.getElementById("LED3").checked=false;
+							LED4_state = 0;
+							}
+							
+							if(this.responseXML.getElementsByTagName('D')[0].childNodes[0].nodeValue==1){
+							document.getElementById("LED4").checked=true;
+							LED5_state = 1;
+							}else{
+							document.getElementById("LED4").checked=false;
+							LED5_state = 0;
+							}
+							
+							fan1 = this.responseXML.getElementsByTagName('E')[0].childNodes[0].nodeValue;  //read fan values
+							fan2 = this.responseXML.getElementsByTagName('F')[0].childNodes[0].nodeValue;
+							
+														
+							if(fan1 == 0)
+							{
+								document.getElementById("fan1_0").checked=true;
+								LED3_state = 0;
+							}
+							else if(fan1 == 1){
+								document.getElementById("fan1_1").checked=true;
+								LED3_state = 1;
+							}
+							else if(fan1 == 2){
+								document.getElementById("fan1_2").checked=true;
+								LED3_state = 2;
+							}
+							else if(fan1 == 3){
+								document.getElementById("fan1_3").checked=true;
+								LED3_state = 3;
+							}
+							else if(fan1 == 4){
+								document.getElementById("fan1_4").checked=true;
+								LED3_state = 4;
+							}
+							else if(fan1 == 5){
+								document.getElementById("fan1_5").checked=true;
+								LED3_state = 5;
+							}
+							
+							if(fan2 == 0)
+							{
+								document.getElementById("fan2_0").checked=true;
+								LED6_state = 0;
+							}
+							else if(fan2 == 1)
+							{
+								document.getElementById("fan2_1").checked=true;
+								LED6_state = 1;
+							}
+							else if(fan2 == 2){
+								document.getElementById("fan2_2").checked=true;
+								LED6_state = 2;
+							}
+							else if(fan2 ===3){
+								document.getElementById("fan2_3").checked=true;
+								LED5_state = 3;
+							}
+							else if(fan2 == 4){
+								document.getElementById("fan2_4").checked=true;
+								LED6_state = 4;
+							}
+							else if(fan2 == 5){
+								document.getElementById("fan2_5").checked=true;
+								LED6_state = 5;
+							}
+							
+						}
+					}
+				}
+				
+			}
+			// send HTTP GET request with LEDs to switch on/off if any
+			request.open("GET", "ajax_inputs" + strLED1 + strLED2 + strLED3 + strLED4 + strLED5 + strLED6 + nocache, true);
+			request.send(null);
+			setTimeout('GetArduinoIO()', 1000);
+			strLED1 = "";
+			strLED2 = "";
+			strLED3 = "";
+			strLED4 = "";
+			strLED5 = "";
+			strLED6 = "";
+		}
+		
+		function GetButton1(){
+			if (LED1_state === 1) {
+				LED1_state = 0;
+				strLED1 = "&LED1=0";
+				document.getElementById("LED1").checked=true;
+			}
+			else {
+				LED1_state = 1;
+				strLED1 = "&LED1=1";
+				document.getElementById("LED1").checked=false;
+				
+			}
+		}
+		function GetButton2(){
+			if (LED2_state === 1) {
+				LED2_state = 0;
+				strLED2 = "&LED2=0";
+				document.getElementById("LED2").checked=true;
+			}
+			else {
+				LED2_state = 1;
+				strLED2 = "&LED2=1";
+				document.getElementById("LED2").checked=false;
+			}
+		}
+		
+			function GetButton4(){
+			if (LED4_state === 1) {
+				LED4_state = 0;
+				strLED4 = "&LED4=0";
+				document.getElementById("LED3").checked=true;
+			}
+			else {
+				LED4_state = 1;
+				strLED4 = "&LED4=1";
+				document.getElementById("LED3").checked=false;
+				
+			}
+		}
+		function GetButton5(){
+			if (LED5_state === 1) {
+				LED5_state = 0;
+				strLED5 = "&LED5=0";
+				document.getElementById("LED4").checked=true;
+			}
+			else {
+				LED5_state = 1;
+				strLED5 = "&LED5=1";
+				document.getElementById("LED4").checked=false;
+			}
+		}
+		
+		
+		
+		
+		function GetFan1Radio0(){
+				LED3_state = 0;
+				strLED3 = "&LED3=0";				
+			}
+		function GetFan1Radio1(){
+				LED3_state = 1;
+				strLED3 = "&LED3=1";				
+			}
+		function GetFan1Radio2(){
+				LED3_state = 2;
+				strLED3 = "&LED3=2";				
+			}
+		function GetFan1Radio3(){
+				LED3_state = 3;
+				strLED3 = "&LED3=3";				
+			}
+		function GetFan1Radio4(){
+				LED3_state = 4;
+				strLED3 = "&LED3=4";				
+			}
+			
+		function GetFan1Radio5(){
+				LED3_state = 5;
+				strLED3 = "&LED3=5";				
+			}
+		
+		
+		
+		function GetFan2Radio0(){
+				LED6_state = 0;
+				strLED6 = "&LED6=0";				
+			}
+		function GetFan2Radio1(){
+				LED6_state = 1;
+				strLED6 = "&LED6=1";				
+			}
+		function GetFan2Radio2(){
+				LED6_state = 2;
+				strLED6 = "&LED6=2";				
+			}
+		function GetFan2Radio3(){
+				LED6_state = 3;
+				strLED6 = "&LED6=3";				
+			}
+		function GetFan2Radio4(){
+				LED6_state = 4;
+				strLED6 = "&LED6=4";				
+			}
+		function GetFan2Radio5(){
+				LED6_state = 5;
+				strLED6 = "&LED6=5";
+			}
+	</script>
+	<style>
+html {
+			height: 100%;
+			background: url('e.jpg') no-repeat center center fixed;
+			background-color: #cccccc;			
+			-webkit-background-size: cover;
+			-moz-background-size: cover;
+			-o-background-size: cover;
+			background-size: cover;
+	}
+body{
+		width: 100%;
+		margin: 0 auto;
+		
+}
+.HeaderBox {
+			float: bottom;
+			margin-top: 10px;
+			margin-bottom: 15px;
+			margin-left: auto;
+			margin-right: auto;
+			padding: 5px 10px 5px 10px;
+			width: 750px;
+			-webkit-box-shadow: 1px 1px 10px 1px #CCCCCC;
+			box-shadow: 1px 1px 10px 1px #CCCCCC;
+			-webkit-border-radius: 5px;
+			-moz-border-radius: 5px;
+			border-radius: 5px;
+			background: rgba(255,255,255,0.41);
+			background: -moz-radial-gradient(center, ellipse cover, rgba(255,255,255,0.41) 0%, rgba(15,15,15,0.36) 100%);
+			background: -webkit-gradient(radial, center center, 0px, center center, 100%, , color-stop(0%, rgba(255,255,255,0.41)), color-stop(100%, rgba(15,15,15,0.36)));
+			background: -webkit-radial-gradient(center, ellipse cover, rgba(255,255,255,0.41) 0%, rgba(15,15,15,0.36) 100%);
+			background: -o-radial-gradient(center, ellipse cover, rgba(255,255,255,0.41) 0%, rgba(15,15,15,0.36) 100%);
+			background: -ms-radial-gradient(center, ellipse cover, rgba(255,255,255,0.41) 0%, rgba(15,15,15,0.36) 100%);
+			background: radial-gradient(ellipse at center, rgba(255,255,255,0.41) 0%, rgba(15,15,15,0.36) 100%);
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#0f0f0f', GradientType=1 );
+			}
+
+.Disp {
+			float: bottom;
+			margin-top: 10px;
+			margin-bottom: 15px;
+			margin-left: auto;
+			margin-right: auto;
+			padding: 5px 10px 5px 10px;
+			width: 700px;
+			height: 100px;
+			border-radius: 101px 101px 101px 101px;
+			-moz-border-radius: 101px 101px 101px 101px;
+			-webkit-border-radius: 101px 101px 101px 101px;
+			background: rgba(255,255,255,0.41);
+			background: -moz-radial-gradient(center, ellipse cover, rgba(255,255,255,0.41) 0%, rgba(15,15,15,0.36) 100%);
+			background: -webkit-gradient(radial, center center, 0px, center center, 100%, , color-stop(0%, rgba(255,255,255,0.41)), color-stop(100%, rgba(15,15,15,0.36)));
+			background: -webkit-radial-gradient(center, ellipse cover, rgba(255,255,255,0.41) 0%, rgba(15,15,15,0.36) 100%);
+			background: -o-radial-gradient(center, ellipse cover, rgba(255,255,255,0.41) 0%, rgba(15,15,15,0.36) 100%);
+			background: -ms-radial-gradient(center, ellipse cover, rgba(255,255,255,0.41) 0%, rgba(15,15,15,0.36) 100%);
+			background: radial-gradient(ellipse at center, rgba(255,255,255,0.41) 0%, rgba(15,15,15,0.36) 100%);
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#0f0f0f', GradientType=1 );
+			}
+
+.AlignBox{
+		float: bottom;
+		margin-top: 10px;
+		margin-bottom: 15px;
+		margin-left: auto;
+		margin-right: auto;
+		padding: 5px 10px 5px 10px;
+		height: 300px;
+		width: 800px;
+		}
+
+.Toggle{
+		float: left;
+		margin-top: 10px;
+		margin-bottom: 20px;
+		margin-right: 30px;
+		margin-left: 30px;
+		border: 0px solid blue;
+		}		
+.IO_box {
+			float: left;
+			margin-top: 10px;
+		    margin-bottom: 15px;
+		    margin-left: 10px;
+		    margin-right: 10px;
+			padding: 5px 10px 15px 10px;
+			border: 0px solid blue;
+			width: 350px;
+			border-radius: 10px 10px 10px 10px;
+			-moz-border-radius: 10px 10px 10px 10px;
+			-webkit-border-radius: 10px 10px 10px 10px;
+			border: 0px solid #000000;
+			-webkit-box-shadow: 10px 10px 164px 15px rgba(163,185,240,0.35);
+			-moz-box-shadow: 10px 10px 164px 15px rgba(163,185,240,0.35);
+			box-shadow: 10px 10px 164px 15px rgba(163,185,240,0.35);
+			background: rgba(15,15,15,0.41);
+			background: -moz-linear-gradient(top, rgba(15,15,15,0.41) 0%, rgba(255,255,255,0.36) 100%);
+			background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(15,15,15,0.41)), color-stop(100%, rgba(255,255,255,0.36)));
+			background: -webkit-linear-gradient(top, rgba(15,15,15,0.41) 0%, rgba(255,255,255,0.36) 100%);
+			background: -o-linear-gradient(top, rgba(15,15,15,0.41) 0%, rgba(255,255,255,0.36) 100%);
+			background: -ms-linear-gradient(top, rgba(15,15,15,0.41) 0%, rgba(255,255,255,0.36) 100%);
+			background: linear-gradient(to bottom, rgba(15,15,15,0.41) 0%, rgba(255,255,255,0.36) 100%);
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0f0f0f', endColorstr='#ffffff', GradientType=0 );
+			}
+
+h1 {
+			font-family: 'Algerian';
+			line-height: 1em;
+			color: #FFFFFF;
+			font-size: 50px;
+			margin-left: auto;
+			margin-right: auto;
+			text-align: center;
+			text-shadow:0px 0px 0 rgb(179,179,179),1px 1px 0 rgb(158,158,158),2px 2px 0 rgb(138,138,138),3px 3px 0 rgb(117,117,117),4px 4px 0 rgb(97,97,97),5px 5px 0 rgb(76,76,76), 6px 6px 0 rgb(56,56,56),7px 7px 6px rgba(0,0,0,0.25),7px 7px 1px rgba(0,0,0,0.5),0px 0px 6px rgba(0,0,0,.2);
+		}
+h2 {
+			font-size: 90%;
+			color: #FAFAFA;
+			margin: 5px 0 5px 0;
+			text-shadow: 2px 1px 3px rgba(150, 150, 150, 1);
+			font-family: Helvetica;
+		}
+		
+		
+.small_text {
+			font-size: 90%;
+			color: #FFFFFF;
+			font-family: Helvetica
+			padding:16px 31px;
+			margin-left: 100px;
+			text-shadow:0px 1px 0px #2f6627;
+		}
+		
+.ObjectName {
+			font-size: 100%;
+			color: #FFFFFF;
+			font-family: Helvetica
+			text-shadow:0px 1px 0px #2f6627;
+			padding: 10px;
+			margin-left: 0 auto;
+			margin-right: 0 auto;
+		}
+
+
+.onoffswitch {
+    position: relative; 
+	width: 103px;
+    -webkit-user-select:none; 
+	-moz-user-select:none; 
+	-ms-user-select: none;
+}
+
+.onoffswitch-checkbox {
+    display: none;
+}
+
+.onoffswitch-label {
+    display: block; overflow: hidden; cursor: pointer;
+    border: 2px solid #999999; border-radius: 41px;
+}
+
+.onoffswitch-inner {
+    display: block; width: 200%; margin-left: -100%;
+    -moz-transition: margin 0.3s ease-in 0s; -webkit-transition: margin 0.3s ease-in 0s;
+    -o-transition: margin 0.3s ease-in 0s; transition: margin 0.3s ease-in 0s;
+}
+
+.onoffswitch-inner:before, .onoffswitch-inner:after {
+    display: block; float: left; width: 50%; height: 41px; padding: 0; line-height: 41px;
+    font-size: 19px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+    border-radius: 41px;
+    box-shadow: 0px 20.5px 0px rgba(0,0,0,0.08) inset;
+}
+
+.onoffswitch-inner:before {
+    content: "ON";
+    padding-left: 11px;
+    background-color: #2FCCFF; color: #FFFFFF;
+    border-radius: 41px 0 0 41px;
+}
+
+.onoffswitch-inner:after {
+    content: "OFF";
+    padding-right: 11px;
+    background-color: #EEEEEE; color: #999999;
+    text-align: right;
+    border-radius: 0 41px 41px 0;
+}
+
+.onoffswitch-switch {
+    display: block; width: 41px; margin: 0px;
+    background: #FFFFFF;
+    border: 2px solid #999999; border-radius: 41px;
+    position: absolute; top: 0; bottom: 0; right: 58px;
+    -moz-transition: all 0.3s ease-in 0s; -webkit-transition: all 0.3s ease-in 0s;
+    -o-transition: all 0.3s ease-in 0s; transition: all 0.3s ease-in 0s; 
+    background-image: -moz-linear-gradient(center top, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 80%); 
+    background-image: -webkit-linear-gradient(center top, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 80%); 
+    background-image: -o-linear-gradient(center top, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 80%); 
+    background-image: linear-gradient(center top, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 80%);
+    box-shadow: 0 1px 1px white inset;
+}
+
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+    right: 0px; 
+}
+
+
+input[type=radio] {
+    display:none;
+}
+ 
+input[type=radio] + label {
+    display:inline-block;
+    margin:-2px;
+    padding: 4px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    line-height: 35px;
+	width: 30px;
+    color: #333;
+    text-align: center;
+    text-shadow: 0 1px 1px rgba(255,255,255,0.75);
+    vertical-align: middle;
+    cursor: pointer;
+    background-color: #f5f5f5;
+    background-image: -moz-linear-gradient(top,#fefefe,#aaaaaa);
+    background-image: -webkit-gradient(linear,0 0,0 100%,from(#fefefe),to(#aaaaaa));
+    background-image: -webkit-linear-gradient(top,#fefefe,#aaaaaa);
+    background-image: -o-linear-gradient(top,#fefefe,#aaaaaa);
+    background-image: linear-gradient(to bottom,#fefefe,#aaaaaa);
+    background-repeat: repeat-x;
+    border: 1px solid #ccc;
+    border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+    border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
+    border-bottom-color: #b3b3b3;
+	border-radius: 5px;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff',endColorstr='#ffe6e6e6',GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+    -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);
+    -moz-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);
+}
+ 
+	input#fan1_0:checked + label {
+		background-image: none;
+		outline: 0;
+		border-radius: 5px;
+		-moz-box-shadow:    6px 8px 30px -8px #FF9966;
+		-webkit-box-shadow: 6px 8px 30px -8px #FF9966;
+		box-shadow:         6px 8px 30px -8px #FF9966;
+        	background-color:#FF9966;
+		}
+		
+	input#fan1_1:checked + label {
+		background-image: none;
+		outline: 0;
+		border-radius: 5px;
+		-moz-box-shadow:    6px 8px 30px -8px #B2FFB2;
+		-webkit-box-shadow: 6px 8px 30px -8px #B2FFB2;
+		box-shadow:         6px 8px 30px -8px #B2FFB2;
+        	background-color:#B2FFB2;
+		}
+		
+	input#fan1_2:checked + label {
+		background-image: none;
+		outline: 0;
+		border-radius: 5px;
+		-moz-box-shadow:    6px 8px 30px -8px #99FF99;
+		-webkit-box-shadow: 6px 8px 30px -8px #99FF99;
+		box-shadow:         6px 8px 30px -8px #99FF99;
+        	background-color:#99FF99;
+		}
+		
+	input#fan1_3:checked + label {
+		background-image: none;
+		outline: 0;
+		border-radius: 5px;
+		-moz-box-shadow:    6px 8px 30px -8px #80FF80;
+		-webkit-box-shadow: 6px 8px 30px -8px #80FF80;
+		box-shadow:         6px 8px 30px -8px #80FF80;
+       		background-color:#80FF80;
+		}
+		
+	input#fan1_4:checked + label {
+		background-image: none;
+		outline: 0;
+		border-radius: 5px;
+		-moz-box-shadow:    6px 8px 30px -8px #66FF66;
+		-webkit-box-shadow: 6px 8px 30px -8px #66FF66;
+		box-shadow:         6px 8px 30px -8px #66FF66;
+        	background-color:#66FF66;
+		}
+		
+	input#fan1_5:checked + label {
+		background-image: none;
+		outline: 0;
+		border-radius: 5px;
+		border-radius: 5px;
+		-moz-box-shadow:    6px 8px 30px -8px #4DFF4D;
+		-webkit-box-shadow: 6px 8px 30px -8px #4DFF4D;
+		box-shadow:         6px 8px 30px -8px #4DFF4D;
+        	background-color:#4DFF4D;
+		}
+	input#fan2_0:checked + label {
+		background-image: none;
+		outline: 0;
+		border-radius: 5px;
+		-moz-box-shadow:    6px 8px 30px -8px #FF9966;
+		-webkit-box-shadow: 6px 8px 30px -8px #FF9966;
+		box-shadow:         6px 8px 30px -8px #FF9966;
+        	background-color:#FF9966;
+		}
+	input#fan2_1:checked + label {
+		background-image: none;
+		outline: 0;
+		border-radius: 5px;
+		-moz-box-shadow:    6px 8px 30px -8px #B2FFB2;
+		-webkit-box-shadow: 6px 8px 30px -8px #B2FFB2;
+		box-shadow:         6px 8px 30px -8px #B2FFB2;
+        	background-color:#B2FFB2;
+		}
+		
+	input#fan2_2:checked + label {
+		background-image: none;
+		outline: 0;
+		border-radius: 5px;
+		-moz-box-shadow:    6px 8px 30px -8px #99FF99;
+		-webkit-box-shadow: 6px 8px 30px -8px #99FF99;
+		box-shadow:         6px 8px 30px -8px #99FF99;
+        	background-color:#99FF99;
+		}
+		
+	input#fan2_3:checked + label {
+		background-image: none;
+		outline: 0;
+		border-radius: 5px;
+		-moz-box-shadow:    6px 8px 30px -8px #80FF80;
+		-webkit-box-shadow: 6px 8px 30px -8px #80FF80;
+		box-shadow:         6px 8px 30px -8px #80FF80;
+       		background-color:#80FF80;
+		}
+		
+	input#fan2_4:checked + label {
+		background-image: none;
+		outline: 0;
+		border-radius: 5px;
+		-moz-box-shadow:    6px 8px 30px -8px #66FF66;
+		-webkit-box-shadow: 6px 8px 30px -8px #66FF66;
+		box-shadow:         6px 8px 30px -8px #66FF66;
+        	background-color:#66FF66;
+		}
+		
+	input#fan2_5:checked + label {
+		background-image: none;
+		outline: 0;
+		border-radius: 5px;
+		border-radius: 5px;
+		-moz-box-shadow:    6px 8px 30px -8px #4DFF4D;
+		-webkit-box-shadow: 6px 8px 30px -8px #4DFF4D;
+		box-shadow:         6px 8px 30px -8px #4DFF4D;
+        background-color:#4DFF4D;
+		}
+
+	</style>
+    </head>
+    <body onload="GetArduinoIO()">
+       	<div class="HeaderBox">
+			<h1>HOME  AUTOMATION</h1>
+		</div>
+        <div class="Disp">
+			<h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Temperature & Humidity</h2>
+			<p class="small_text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Temperature : <span id="TEMP" class="analog">...</span>&degC</p>
+			<p class="small_text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Relative Humidity : <span id="HUMI" class="analog">...</span>%</p>			
+		</div>
+		
+		<div class="AlignBox">
+		<div class="IO_box">
+			<h2>Living Room</h2>
+			<div class="Toggle">
+			<div>
+			<p class="ObjectName">Tubes</p>
+			</div>
+			<div class="onoffswitch">
+				<input type="checkbox" name="onoffswitch1" class="onoffswitch-checkbox" id="LED1" onclick="GetButton1();">
+				<label class="onoffswitch-label" for="LED1">
+					<span class="onoffswitch-inner"></span>
+					<span class="onoffswitch-switch"></span>
+				</label>
+			</div></div>
+			
+			<div class="Toggle">
+			<div>
+			<p class="ObjectName">CFL</p>
+			</div>
+			<div class="onoffswitch">
+				<input type="checkbox" name="onoffswitch2" class="onoffswitch-checkbox" id="LED2" onclick="GetButton2();" >
+				<label class="onoffswitch-label" for="LED2">
+					<span class="onoffswitch-inner"></span>
+					<span class="onoffswitch-switch"></span>
+				</label>
+			</div></div>
+			
+
+			<p class="small_text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FAN</p>
+			<form action="">
+			<input type="radio" id="fan1_0" name="fan1" onclick="GetFan1Radio0()" checked>
+			   <label for="fan1_0">OFF</label>
+			<input type="radio" id="fan1_1" name="fan1" onclick="GetFan1Radio1()">
+			   <label for="fan1_1">1</label>
+			<input type="radio" id="fan1_2" name="fan1" onclick="GetFan1Radio2()">
+ 			  <label for="fan1_2">2</label>
+			<input type="radio" id="fan1_3" name="fan1" onclick="GetFan1Radio3()">
+ 			  <label for="fan1_3">3</label> 
+			<input type="radio" id="fan1_4" name="fan1" onclick="GetFan1Radio4()">
+ 			  <label for="fan1_4">4</label>
+			<input type="radio" id="fan1_5" name="fan1" onclick="GetFan1Radio5()">
+ 			  <label for="fan1_5">5</label>
+			</form>
+		</div>
+		<div class="IO_box">
+			<h2>Bed Room</h2>
+			<div class="Toggle">
+			<div>
+			<p class="ObjectName">Incandescent</p>
+			</div>
+			<div class="onoffswitch">
+				<input type="checkbox" name="onoffswitch3" class="onoffswitch-checkbox" id="LED3" onclick="GetButton4();">
+				<label class="onoffswitch-label" for="LED3">
+					<span class="onoffswitch-inner"></span>
+					<span class="onoffswitch-switch"></span>
+				</label>
+			</div></div>
+			<div class="Toggle">
+			<div>
+			<p class="ObjectName">AC</p>
+			</div>
+			<div class="onoffswitch">
+				<input type="checkbox" name="onoffswitch4" class="onoffswitch-checkbox" id="LED4" onclick="GetButton5();">
+				<label class="onoffswitch-label" for="LED4">
+					<span class="onoffswitch-inner"></span>
+					<span class="onoffswitch-switch"></span>
+				</label>
+			</div></div>
+			<p class="small_text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FAN</p>
+			<form action="">
+			<input type="radio" id="fan2_0" name="fan2" onclick="GetFan2Radio0()" checked>
+			   <label for="fan2_0">  OFF  </label>
+			<input type="radio" id="fan2_1" name="fan2" onclick="GetFan2Radio1()">
+			  <label for="fan2_1">  1  </label>
+			<input type="radio" id="fan2_2" name="fan2" onclick="GetFan2Radio2()">
+ 			  <label for="fan2_2">  2  </label>
+			<input type="radio" id="fan2_3" name="fan2" onclick="GetFan2Radio3()">
+ 			  <label for="fan2_3">  3  </label> 
+			<input type="radio" id="fan2_4" name="fan2" onclick="GetFan2Radio4()">
+ 			  <label for="fan2_4">  4  </label>
+			<input type="radio" id="fan2_5" name="fan2" onclick="GetFan2Radio5()">
+ 			  <label for="fan2_5">  5  </label>
+			</form>
+		</div>
+		</div>
+
+<p>A demo by <b>Trishit Dutta, Mohit Rathore, Adrish Chatterjee and Divyank Goswami</b></p>
+   </body>
+</html>
